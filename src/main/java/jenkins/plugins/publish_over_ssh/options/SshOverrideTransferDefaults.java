@@ -29,6 +29,7 @@ import hudson.model.Describable;
 import hudson.model.Descriptor;
 import hudson.model.Hudson;
 import hudson.util.FormValidation;
+import jenkins.model.Jenkins;
 import jenkins.plugins.publish_over.BPTransfer;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
@@ -111,7 +112,7 @@ public class SshOverrideTransferDefaults implements SshTransferOptions, Describa
     }
 
     public SshOverrideTransferDefaultsDescriptor getDescriptor() {
-        return Hudson.getInstance().getDescriptorByType(SshOverrideTransferDefaultsDescriptor.class);
+        return Jenkins.getInstance().getDescriptorByType(SshOverrideTransferDefaultsDescriptor.class);
     }
 
     public boolean isUsePty() {

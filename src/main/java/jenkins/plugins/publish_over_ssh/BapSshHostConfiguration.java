@@ -27,12 +27,12 @@ package jenkins.plugins.publish_over_ssh;
 import com.jcraft.jsch.*;
 import hudson.Util;
 import hudson.model.Describable;
-import hudson.model.Hudson;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import jenkins.model.Jenkins;
 import jenkins.plugins.publish_over.*;
 import jenkins.plugins.publish_over_ssh.descriptor.BapSshHostConfigurationDescriptor;
 import org.apache.commons.lang.StringUtils;
@@ -434,7 +434,7 @@ public class BapSshHostConfiguration extends BPHostConfiguration<BapSshClient, B
     }
 
     public BapSshHostConfigurationDescriptor getDescriptor() {
-        return Hudson.getInstance().getDescriptorByType(BapSshHostConfigurationDescriptor.class);
+        return Jenkins.getInstance().getDescriptorByType(BapSshHostConfigurationDescriptor.class);
     }
 
     protected EqualsBuilder addToEquals(final EqualsBuilder builder, final BapSshHostConfiguration that) {

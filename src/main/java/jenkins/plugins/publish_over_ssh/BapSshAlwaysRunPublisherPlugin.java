@@ -46,10 +46,10 @@ public class BapSshAlwaysRunPublisherPlugin extends BapSshPublisherPlugin {
         super(publishers, continueOnError, failOnError, alwaysPublishFromMaster, masterNodeName, paramPublish);
     }
 
-    @Override
+    /*@Override
     protected boolean isBuildGoodEnoughToRun(final AbstractBuild<?, ?> build, final PrintStream console) {
         return true;
-    }
+    }*/
 
     public boolean perform(final AbstractBuild<?, ?> build, final BuildListener listener) throws InterruptedException, IOException {
         return perform(build, null, listener);

@@ -30,7 +30,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>2.19</version>
+        <version>2.9</version>
     </parent>
 
     <groupId>org.jenkins-ci.plugins</groupId>
@@ -43,7 +43,7 @@
 
     <properties>
         <java.net.id>bap</java.net.id>
-	<jenkins.version>1.580.1</jenkins.version>
+        <jenkins.version>2.60.3</jenkins.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <findbugs.failOnError>false</findbugs.failOnError>
     </properties>
@@ -67,12 +67,12 @@
         <dependency>
             <groupId>com.jcraft</groupId>
             <artifactId>jsch</artifactId>
-            <version>0.1.53</version>
+            <version>0.1.54</version>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>publish-over</artifactId>
-            <version>0.18</version>
+            <version>0.19-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

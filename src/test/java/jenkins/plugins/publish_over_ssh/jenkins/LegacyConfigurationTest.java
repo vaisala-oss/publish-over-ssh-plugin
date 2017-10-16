@@ -37,8 +37,10 @@ import jenkins.plugins.publish_over_ssh.BapSshPreBuildWrapper;
 import jenkins.plugins.publish_over_ssh.BapSshPublisher;
 import jenkins.plugins.publish_over_ssh.BapSshPublisherPlugin;
 import jenkins.plugins.publish_over_ssh.BapSshTransfer;
+import static org.junit.Assert.*;
+import org.junit.Rule;
 import org.junit.Test;
-import org.jvnet.hudson.test.HudsonTestCase;
+import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.hudson.test.recipes.LocalData;
 
 import java.util.ArrayList;
@@ -48,12 +50,15 @@ import java.util.List;
 import static jenkins.plugins.publish_over_ssh.jenkins.JenkinsTestHelper.prepare;
 
 @SuppressWarnings({ "PMD.SignatureDeclareThrowsException", "PMD.TooManyMethods" })
-public class LegacyConfigurationTest extends HudsonTestCase {
+public class LegacyConfigurationTest {
 
     private static final int DEFAULT_PORT = 22;
     private static final int DEFAULT_TIMEOUT = 300000;
     private static final int DEFAULT_EXEC_TIMEOUT = 120000;
     private static final String DEFAULT_JUMPHOST = "";
+
+    @Rule
+    public JenkinsRule r = new JenkinsRule();
 
     @LocalData
     @Test
@@ -209,10 +214,10 @@ public class LegacyConfigurationTest extends HudsonTestCase {
             + "-----END DSA PRIVATE KEY-----\n";
 
     private BapSshPublisherPlugin.Descriptor getPublisherPluginDescriptor() {
-        return Hudson.getInstance().getDescriptorByType(BapSshPublisherPlugin.Descriptor.class);
+        return r.jenkins.getInstance().getDescriptorByType(BapSshPublisherPlugin.Descriptor.class);
     }
     private BapSshPublisherPlugin getConfiguredPublisherPlugin() {
-        for (Project project : hudson.getProjects()) {
+        for (Project project : r.jenkins.getProjects()) {
             if (project.getPublisher(getPublisherPluginDescriptor()) != null)
                 return (BapSshPublisherPlugin) project.getPublisher(getPublisherPluginDescriptor());
         }
@@ -221,7 +226,7 @@ public class LegacyConfigurationTest extends HudsonTestCase {
     }
 
     private BapSshBuilderPlugin getConfiguredBuilderPlugin() {
-        for (Project project : hudson.getProjects()) {
+        for (Project project : r.jenkins.getProjects()) {
             for (Object builder : project.getBuilders())
                 if (builder instanceof BapSshBuilderPlugin)
                     return (BapSshBuilderPlugin) builder;
@@ -231,7 +236,7 @@ public class LegacyConfigurationTest extends HudsonTestCase {
     }
 
     private BuildWrapper getConfiguredBuildWrapper(final Class<? extends BuildWrapper> wrapperClass) {
-        for (Project project : hudson.getProjects()) {
+        for (Project project : r.jenkins.getProjects()) {
             final DescribableList<BuildWrapper, Descriptor<BuildWrapper>> wrappers = project.getBuildWrappersList();
             final BuildWrapper wrapper = wrappers.get(wrapperClass);
             if (wrapper != null) return wrapper;

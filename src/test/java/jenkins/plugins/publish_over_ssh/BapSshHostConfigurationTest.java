@@ -48,6 +48,7 @@ import jenkins.plugins.publish_over_ssh.helper.RandomFile;
 import jenkins.plugins.publish_over_ssh.jenkins.JenkinsTestHelper;
 import org.easymock.classextension.EasyMock;
 import org.easymock.classextension.IMocksControl;
+import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -55,10 +56,21 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.jvnet.hudson.test.HudsonTestCase;
+import org.jvnet.hudson.test.JenkinsRule;
 
 @SuppressWarnings({"PMD.SignatureDeclareThrowsException", "PMD.TooManyMethods", "PMD.AvoidDuplicateLiterals"})
-public class BapSshHostConfigurationTest extends HudsonTestCase {
+public class BapSshHostConfigurationTest {
+    @Rule
+    public JenkinsRule r = new JenkinsRule();
+    public final IMocksControl mockControl = EasyMock.createStrictControl();
+    private final JSch mockJSch = mockControl.createMock(JSch.class);
+    private final Session mockSession = mockControl.createMock(Session.class);
+    private final Session mockSession2 = mockControl.createMock(Session.class);
+    private final ChannelSftp mockSftp = mockControl.createMock(ChannelSftp.class);
+    private final BapSshTestHelper testHelper = new BapSshTestHelper(mockControl, mockSftp);
+    private TemporaryFolder jenkinsHome;
+    private BPBuildInfo buildInfo;
+    private BapSshHostConfiguration hostConfig;
 
     private static final String TEST_NAME = "test config";
     private static final String TEST_HOSTNAME = "test.host.name";
@@ -88,24 +100,11 @@ public class BapSshHostConfigurationTest extends HudsonTestCase {
         hostConfig = null;
     }
 
-    @Rule
-    private final IMocksControl mockControl = EasyMock.createStrictControl();
-    private final JSch mockJSch = mockControl.createMock(JSch.class);
-    private final Session mockSession = mockControl.createMock(Session.class);
-    private final Session mockSession2 = mockControl.createMock(Session.class);
-    private final ChannelSftp mockSftp = mockControl.createMock(ChannelSftp.class);
-    private final BapSshTestHelper testHelper = new BapSshTestHelper(mockControl, mockSftp);
-    private TemporaryFolder jenkinsHome;
-    private BPBuildInfo buildInfo;
-    private BapSshHostConfiguration hostConfig;
-
-    @Override
     @Before
     public void setUp() throws Exception {
         jenkinsHome = new TemporaryFolder();
         jenkinsHome.create();
         buildInfo = new BPBuildInfo(TaskListener.NULL, "", new FilePath(jenkinsHome.getRoot()), null, null);
-        super.setUp();
     }
 
     @Test

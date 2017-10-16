@@ -25,13 +25,14 @@
 package jenkins.plugins.publish_over_ssh;
 
 import hudson.Extension;
+import hudson.FilePath;
 import hudson.Launcher;
-import hudson.model.AbstractBuild;
-import hudson.model.AbstractProject;
-import hudson.model.BuildListener;
-import hudson.model.Hudson;
+import hudson.console.ExpandableDetailsNote;
+import hudson.model.*;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
+import jenkins.model.Jenkins;
+import jenkins.tasks.SimpleBuildStep;
 import jenkins.plugins.publish_over.BPPlugin;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -43,7 +44,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 @SuppressWarnings("PMD.LooseCoupling") // serializable
-public class BapSshBuilderPlugin extends Builder {
+public class BapSshBuilderPlugin extends Builder implements SimpleBuildStep {
 
     private final BapSshPublisherPlugin delegate;
 
@@ -59,9 +60,9 @@ public class BapSshBuilderPlugin extends Builder {
     }
 
     @Override
-    public boolean perform(final AbstractBuild<?, ?> build, final Launcher launcher, final BuildListener listener)
-                    throws InterruptedException, IOException {
-        return delegate.perform(build, launcher, listener);
+    public void perform(Run<?, ?> build, FilePath workspace, Launcher launcher, final TaskListener listener)
+            throws InterruptedException, IOException {
+        delegate.perform(build, workspace, launcher, listener);
     }
 
     protected HashCodeBuilder addToHashCode(final HashCodeBuilder builder) {
@@ -100,7 +101,7 @@ public class BapSshBuilderPlugin extends Builder {
             return Messages.builder_descriptor_displayName();
         }
         public BapSshPublisherPlugin.Descriptor getPublisherDescriptor() {
-            return Hudson.getInstance().getDescriptorByType(BapSshPublisherPlugin.Descriptor.class);
+            return Jenkins.getInstance().getDescriptorByType(BapSshPublisherPlugin.Descriptor.class);
         }
     }
 
